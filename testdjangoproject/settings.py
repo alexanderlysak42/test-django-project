@@ -20,12 +20,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=^9jt5(4z5u4)%)))is@hy)l9&7!9yv%32$+(+8=)o=f@$uflp'
+SECRET_KEY = os.getenv(
+    "SECRET_KEY",
+    'django-insecure-=^9jt5(4z5u4)%)))is@hy)l9&7!9yv%32$+(+8=)o=f@$uflp',
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -37,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'users',
+    'projects'
 ]
 
 MIDDLEWARE = [
@@ -130,3 +136,9 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'projects_list'
+LOGOUT_REDIRECT_URL = 'login'
