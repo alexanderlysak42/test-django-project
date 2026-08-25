@@ -23,7 +23,9 @@ urlpatterns = [
 
     path('projects/', include('projects.urls')),
 
-    path('login/', LoginView.as_view(), name="login",),
+    path('tasks/', include('tasks.urls')),
+
+    path('login/', LoginView.as_view(redirect_authenticated_user=True), name="login",),
 
     path('logout/', LogoutView.as_view(), name = 'logout',),
 ]

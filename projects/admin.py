@@ -1,11 +1,19 @@
 from django.contrib import admin
 
 from projects.models import Project
+from users.models import User
 
 # Register your models here.
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'manager':
+            kwargs['queryset'] = User.objects.filter(role=User.Role.MANAGER)
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     list_display = (
         'name',
         'client_name',
@@ -30,6 +38,10 @@ class ProjectAdmin(admin.ModelAdmin):
     readonly_fields = (
         'created_at',
         'updated_at',
+    )
+
+    filter_horizontal = (
+        'workers',
     )
 
     fieldsets = (
@@ -65,6 +77,7 @@ class ProjectAdmin(admin.ModelAdmin):
             {
                 'fields': (
                     'manager',
+                    'workers',
                 ),
             },
         ),

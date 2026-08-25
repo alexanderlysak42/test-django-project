@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Project delete
+    Task delete
 {% endblock %}
 
 {% block content %}
@@ -9,14 +9,14 @@
 <div class="container py-5">
 
     <h1 class="mb-4">
-        Delete project
+        Delete task
     </h1>
 
     <div class="alert alert-warning">
 
         <p class="mb-0">
-            Are you sure you want to delete project:
-            <strong>{{ project.name }}</strong>?
+            Are you sure you want to delete task:
+            <strong>{{ task.title }}</strong>?
         </p>
 
     </div>
@@ -24,6 +24,8 @@
     <form method="post">
 
         {% csrf_token %}
+
+        <input type="hidden" name="next" value="{{ next }}">
 
         <button
             type="submit"
@@ -33,7 +35,7 @@
         </button>
 
         <a
-            href="{% url 'projects_list' %}"
+            href="{% url 'task_detail' project.id task.id %}"
             class="btn btn-secondary"
         >
             Cancel

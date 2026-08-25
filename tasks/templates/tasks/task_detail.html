@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Task detail
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h1 class="mb-1">
+                {{ task.title }}
+            </h1>
+
+            <p class="text-muted mb-0">
+                Project: {{ project.name }}
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'project_detail' task.project.id %}?next={{ next|urlencode }}"
+            class="btn btn-outline-secondary"
+        >
+            Back to project
+        </a>
+
+
+
+        <a
+            href="{% if next %}{{ next }}{% else %}{% url 'tasks_list' %}{% endif %}"
+            class="btn btn-outline-primary"
+        >
+            My tasks
+        </a>
+
+
+
+    </div>
+
+    <div class="card">
+
+        <div class="card-body">
+
+            <p>
+                <strong>Description:</strong>
+
+                {% if task.description %}
+                    {{ task.description }}
+                {% else %}
+                    No description
+                {% endif %}
+            </p>
+
+            <p>
+                <strong>Assigned to:</strong>
+
+                {% if task.assigned_to %}
+                    {{ task.assigned_to.username }}
+                {% else %}
+                    Not assigned
+                {% endif %}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                {{ task.get_status_display }}
+            </p>
+
+            <hr>
+
+            <p class="text-muted mb-1">
+                Created:
+                {{ task.created_at }}
+            </p>
+
+            <p class="text-muted mb-0">
+                Updated:
+                {{ task.updated_at }}
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="mt-4">
+
+        {% if user.role == user.Role.ADMIN or task.project.manager == user %}
+
+
+        <a
+            href="{% url 'task_update' task.project.id task.id %}?next={{ next|urlencode }}"
+            class="btn btn-outline-primary"
+        >
+            Edit
+        </a>
+
+        <a
+            href="{% url 'task_delete' task.project.id task.id %}?next={{ next|urlencode }}"
+            class="btn btn-danger"
+        >
+            Delete
+        </a>
+
+
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

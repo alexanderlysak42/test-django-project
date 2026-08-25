@@ -36,7 +36,13 @@ class Project(models.Model):
         on_delete = models.SET_NULL,
         null = True,
         blank = True,
-        related_name = 'project_manager',
+        related_name = 'managed_projects',
+    )
+
+    workers = models.ManyToManyField(
+        'users.User',
+        blank=True,
+        related_name='projects',
     )
 
     created_at = models.DateTimeField(
